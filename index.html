@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dog CAPTCHA Site</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+<body>
+  <div id="recaptcha-container">
+    <form id="captcha-form" action="/verify" method="POST">
+      <div class="g-recaptcha" data-sitekey="6LcqANorAAAAAM-x95o5SfKu_khCLjM0J4QcLh8s"></div>
+      <button type="submit">Verify</button>
+    </form>
+  </div>
+
+  <div id="content" class="container" style="display: none;">
+    <h1>Welcome to the Dog Page</h1>
+    <img src="dog.jpg" alt="Happy Dog" class="dog-image" />
+    <button onclick="sayHello()">Click Me!</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
