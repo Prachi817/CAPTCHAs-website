@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Text CAPTCHA Landing Page</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- CAPTCHA Section -->
+  <div id="captcha-container" class="container">
+    <h2>Enter the CAPTCHA Text</h2>
+    <img src="captcha.jpg" alt="CAPTCHA" class="captcha-image" />
+    <br><br>
+    <input type="text" id="captcha-input" placeholder="Type what you see" />
+    <br><br>
+    <button onclick="verifyCaptcha()">Verify</button>
+  </div>
+
+  <!-- Hidden Landing Content -->
+  <div id="content" class="container" style="display: none;">
+    <h1>Test Landing Page</h1>
+    <img src="dog.jpg" alt="A happy dog" class="dog-image" />
+    <button onclick="sayHello()">Click Me!</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+s

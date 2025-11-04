@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Welcome Dog Page</title>
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      margin-top: 80px;
+    }
+    img {
+      width: 300px;
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1> Success! Welcome to the Dog Page!</h1>
+  <img src="{{ url_for('static', filename='dog.jpg') }}" alt="Happy Dog">
+</body>
+</html>

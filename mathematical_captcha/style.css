@@ -1,0 +1,68 @@
+/* General body styling */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f2f2f2;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+/* Container for both CAPTCHA and landing content */
+.container {
+  padding: 40px;
+  margin: 100px auto;
+  width: 90%;
+  max-width: 400px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Heading style */
+h1, h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Math question styling */
+#math-question {
+  font-size: 20px;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+/* CAPTCHA input field */
+input[type="text"] {
+  padding: 10px;
+  font-size: 16px;
+  width: 80%;
+  max-width: 250px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+
+/* Buttons */
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #ffcc00;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: #ffdd33;
+}
+
+/* Dog image */
+.dog-image {
+  width: 300px;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  margin: 20px 0;
+}

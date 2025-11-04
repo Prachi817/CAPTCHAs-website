@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Slider CAPTCHA</title>
+  <style>
+    #slider-box {
+      width: 300px;
+      height: 40px;
+      background: #e0e0e0;
+      border-radius: 5px;
+      position: relative;
+    }
+
+    #slider {
+      width: 40px;
+      height: 100%;
+      background: #4caf50;
+      position: absolute;
+      left: 0;
+      cursor: grab;
+      border-radius: 5px;
+    }
+
+    #done {
+      color: green;
+      display: none;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Slide to verify</h2>
+  <form method="POST" action="/submit" onsubmit="return checkVerified();">
+    <div id="slider-box">
+      <div id="slider"></div>
+    </div>
+    <input type="hidden" name="slider_verified" id="slider_verified" value="false">
+    <div id="done">✅ Verified!</div>
+    <br>
+    <button type="submit">Enter</button>
+  </form>
+
+  <script>
+    const slider = document.getElementById('slider');
+    const box = document.getElementById('slider-box');
+    let isDragging = false;
+
+    slider.addEventListener('mousedown', () => isDragging = true);
+    document.addEventListener('mouseup', () => isDragging = false);
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const boxRect = box.getBoundingClientRect();
+      let x = e.clientX - boxRect.left;
+      x = Math.max(0, Math.min(x, boxRect.width - slider.offsetWidth));
+      slider.style.left = x + 'px';
+
+      // if near end
+      if (x > boxRect.width - slider.offsetWidth - 5) {
+        document.getElementById('slider_verified').value = 'true';
+        document.getElementById('done').style.display = 'block';
+        slider.style.background = '#00c853';
+        isDragging = false;
+      }
+    });
+
+    function checkVerified() {
+      return document.getElementById('slider_verified').value === 'true';
+    }
+  </script>
+</body>
+</html>

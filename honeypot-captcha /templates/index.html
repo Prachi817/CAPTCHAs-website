@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Secure CAPTCHA Form</title>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <style>
+    .hidden-field {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h2>Verify You're Human</h2>
+  <form action="/submit" method="post">
+    <input type="text" name="username" placeholder="Username" required />
+
+    <!-- Honeypot Field (hidden) -->
+    <input type="text" name="email" id="honeypot" class="hidden-field" />
+
+    <!-- reCAPTCHA -->
+    <div class="g-recaptcha" data-sitekey="{{ site_key }}"></div>
+
+    <br>
+    <input type="submit" value="Submit" />
+  </form>
+
+  <!-- Dynamically inject honeypot field via JS -->
+  <script>
+    window.addEventListener('DOMContentLoaded', function () {
+      const honeypot = document.createElement('input');
+      honeypot.type = 'text';
+      honeypot.name = 'hidden_email';
+      honeypot.style.display = 'none';
+      document.querySelector('form').appendChild(honeypot);
+    });
+  </script>
+</body>
+</html>

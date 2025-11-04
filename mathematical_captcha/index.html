@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Math CAPTCHA Landing Page</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container" id="captcha-container">
+    <h2>Solve the Math CAPTCHA</h2>
+    <p id="math-question">Loading...</p>
+    <input type="text" id="math-answer" placeholder="Enter result" />
+    <br><br>
+    <button onclick="verifyMathCaptcha()">Submit</button>
+  </div>
+
+  <div class="container" id="content" style="display: none;">
+    <h1>Test Landing Page</h1>
+    <img src="dog.jpg" alt="A happy dog" class="dog-image" />
+    <button onclick="sayHello()">Click Me!</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Text CAPTCHA</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 80px;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+    }
+    .error {
+      color: red;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Text Challenge CAPTCHA</h1>
+  <p>Please answer the question to continue:</p>
+
+  <form action="/submit" method="POST">
+    <label for="captcha_answer">Type the word <strong>"dog"</strong>:</label><br><br>
+    <input type="text" name="captcha_answer" required>
+    <button type="submit">Submit</button>
+  </form>
+
+  {% if error %}
+    <p class="error">{{ error }}</p>
+  {% endif %}
+</body>
+</html>

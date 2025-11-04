@@ -1,0 +1,13 @@
+body { text-align: center; font-family: Arial, sans-serif; background: #f0f0f0; }
+#captcha-container { position: relative; width: 300px; margin: 100px auto; }
+#target-slot {
+  width: 80px; height: 80px;
+  border: 2px dashed #333; position: absolute;
+}
+#puzzle-piece {
+  width: 80px; height: 80px;
+  position: absolute; cursor: grab;
+  touch-action: none;
+}
+.container { margin-top: 20px; }
+

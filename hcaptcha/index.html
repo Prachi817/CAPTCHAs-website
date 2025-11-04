@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>hCaptcha Demo Landing Page</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+</head>
+<body>
+  <!-- hCaptcha Widget -->
+  <div id="recaptcha-container">
+    <div class="h-captcha"
+         data-sitekey="10000000-ffff-ffff-ffff-000000000001"
+         data-callback="onHCaptchaSuccess">
+    </div>
+  </div>
+
+  <!-- Hidden Landing Page Content -->
+  <div id="content" class="container" style="display: none;">
+    <h1>Test Landing Page</h1>
+    <img src="dog.jpg" alt="A happy dog" class="dog-image" />
+    <button onclick="sayHello()">Click Me!</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

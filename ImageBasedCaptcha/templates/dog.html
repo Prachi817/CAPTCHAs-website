@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Welcome Dog Page</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h1>Welcome to the Dog Page! 🐶</h1>
+  <img src="{{ url_for('static', filename='images/dog.jpg') }}" alt="Dog" class="dog-img">
+</body>
+</html>

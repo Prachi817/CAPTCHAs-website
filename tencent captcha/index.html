@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Verification — Simple CAPTCHA Demo</title>
+  <style>
+    :root {
+      --bg: #0b1220;
+      --card: #121a2b;
+      --muted: #95a3b3;
+      --text: #eaf0f6;
+      --accent: #5aa7ff;
+      --ok: #31d0aa;
+      --err: #ff6b6b;
+      --border: #22304a;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(1200px 600px at 10% -10%, #0f1a33 0, transparent 40%),
+                  radial-gradient(900px 500px at 100% 10%, #0d1c39 0, transparent 35%),
+                  var(--bg);
+      color: var(--text);
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+    .app {
+      width: min(920px, 100%);
+      display: grid;
+      gap: 16px;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .brand {
+      display: grid;
+      gap: 4px;
+    }
+    .brand h1 { margin: 0; font-size: 20px; letter-spacing: .3px; }
+    .brand p { margin: 0; color: var(--muted); font-size: 13px; }
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0)) padding-box,
+                  radial-gradient(120px 120px at 0% 0%, rgba(90,167,255,.25), transparent 40%) border-box,
+                  var(--card) border-box;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.04);
+    }
+    .grid { display: grid; gap: 16px; grid-template-columns: 1.2fr .8fr; }
+    @media (max-width: 860px){ .grid { grid-template-columns: 1fr; } }
+    .hero h2 { margin: 0 0 8px; font-size: 28px; }
+    .hero p { margin: 0; color: var(--muted); }
+
+    /* Mock slider CAPTCHA */
+    .captcha {
+      display: grid; gap: 10px;
+    }
+    .slider-wrap {
+      position: relative;
+      height: 44px;
+      background: #0f1a2a;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      user-select: none;
+    }
+    .track-fill { position:absolute; inset:0 auto 0 0; width:0; background: rgba(90,167,255,.25); transition: width .05s linear; }
+    .slider-handle {
+      position: absolute; inset: 4px auto 4px 4px; width: 160px; max-width: calc(100% - 8px);
+      display: grid; place-items:center;
+      background: linear-gradient(180deg, #122443, #0f1a2a);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,.25);
+      cursor: grab;
+      font-weight: 600;
+    }
+    .slider-handle:active { cursor: grabbing; }
+    .slider-text { position:absolute; inset:0; display:grid; place-items:center; color: var(--muted); pointer-events:none; font-size: 14px; }
+
+    .status { font-size: 14px; color: var(--muted); display:flex; align-items:center; gap:8px; }
+    .status .dot { width:10px; height:10px; border-radius:50%; background: var(--muted); box-shadow: 0 0 0 2px rgba(255,255,255,.06) inset; }
+    .status.ok .dot { background: var(--ok); }
+    .status.err .dot { background: var(--err); }
+
+    /* Form */
+    form { display: grid; gap: 10px; }
+    .row { display:grid; gap: 8px; }
+    label { font-size: 14px; color: var(--muted); }
+    input[type="text"], input[type="email"] {
+      width: 100%; padding: 12px 14px; border-radius: 10px; border:1px solid var(--border); background:#0f1a2a; color:var(--text);
+    }
+    button {
+      appearance: none; border: 0; padding: 12px 14px; border-radius: 12px; font-weight: 600; cursor:pointer; color: #0a1220;
+      background: linear-gradient(180deg, #71b7ff, #4d98ea); box-shadow: 0 6px 16px rgba(90,167,255,.35);
+    }
+    button[disabled] { opacity: .65; cursor: not-allowed; }
+    .footer-note { font-size: 12px; color: var(--muted); }
+    .badge { font-size: 11px; padding: 4px 8px; border-radius: 999px; border:1px solid var(--border); color: var(--muted); }
+  </style>
+</head>
+<body>
+  <main class="app" aria-label="Simple CAPTCHA Demo">
+    <header>
+      <div class="brand">
+        <h1>Verification Portal</h1>
+        <p>Minimal site with a mock slider CAPTCHA (Tencent-style interaction)</p>
+      </div>
+      <span class="badge" aria-hidden="true">Demo</span>
+    </header>
+
+    <section class="grid">
+      <div class="card hero">
+        <h2>Sign in to continue</h2>
+        <p>This page demonstrates a simple UX pattern similar to Tencent Cloud's slider verification. Replace the mock with the real provider when ready.</p>
+        <div style="height: 12px"></div>
+        <form id="demo-form" onsubmit="event.preventDefault(); alert('Form submitted!');">
+          <div class="row">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="name@example.com" required />
+          </div>
+          <div class="row">
+            <label for="username">Username</label>
+            <input id="username" name="username" type="text" placeholder="yourname" required />
+          </div>
+
+          <div class="row captcha" aria-live="polite">
+            <label>Human verification</label>
+            <div class="slider-wrap" id="slider" role="group" aria-label="Slide to verify">
+              <div class="track-fill" id="track"></div>
+              <div class="slider-text" id="sliderText">Hold and slide right to verify</div>
+              <div class="slider-handle" id="handle" role="button" aria-describedby="sliderDesc" tabindex="0">↔︎ Drag</div>
+            </div>
+            <p id="sliderDesc" class="footer-note">This is a mock component for development/testing — not a real CAPTCHA. Integrate your provider (e.g., Tencent Cloud TCaptcha) in production.</p>
+            <div class="status" id="status"><span class="dot"></span><span class="msg">Not verified</span></div>
+          </div>
+
+          <button id="submitBtn" type="submit" disabled>Continue</button>
+        </form>
+      </div>
+
+      <aside class="card">
+        <h3 style="margin-top:0">How to wire up the real thing</h3>
+        <ol style="margin-top:8px; padding-left:18px; color: var(--muted);">
+          <li>Sign up for your CAPTCHA provider (e.g., Tencent Cloud "TCaptcha") and create an AppID.</li>
+          <li>Load their SDK script per docs and initialize in place of this mock slider.</li>
+          <li>On success, set <code>isVerified = true</code> and forward the ticket/nonce to your backend for server-side validation.</li>
+          <li>Enable the submit button only after verification, and re-verify on sensitive actions.</li>
+        </ol>
+        <details style="margin-top:10px;">
+          <summary>Drop-in Hook Example</summary>
+          <pre style="white-space: pre-wrap; color: #cfe5ff; background:#0d1426; border:1px solid var(--border); border-radius:10px; padding:10px;">
+// Pseudo-code for Tencent TCaptcha
+// 1) Include provider script (per official docs)
+// 2) Initialize:
+//   const captcha = new TCaptcha({ appid: 'YOUR_APPID', callback: (res) => {
+//       if (res.ret === 0) { // success
+//          isVerified = true;
+//          submitBtn.disabled = false;
+//          // send res.ticket, res.randstr to backend for verification
+//       }
+//   }});
+// 3) Replace the slider below with a trigger button that calls captcha.show();
+          </pre>
+        </details>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    // --- Mock Slider CAPTCHA logic (for local dev only) ---
+    const wrap = document.getElementById('slider');
+    const handle = document.getElementById('handle');
+    const track = document.getElementById('track');
+    const text = document.getElementById('sliderText');
+    const status = document.getElementById('status');
+    const submitBtn = document.getElementById('submitBtn');
+
+    let isDown = false;
+    let startX = 0;
+    let handleStartLeft = 0;
+    let isVerified = false;
+
+    const clamp = (min, v, max) => Math.max(min, Math.min(v, max));
+
+    function setVerified(ok) {
+      isVerified = ok;
+      status.className = 'status ' + (ok ? 'ok' : '');
+      status.querySelector('.msg').textContent = ok ? 'Verified' : 'Not verified';
+      text.textContent = ok ? 'Verification passed' : 'Hold and slide right to verify';
+      submitBtn.disabled = !ok;
+    }
+
+    function onDown(clientX) {
+      if (isVerified) return;
+      isDown = true;
+      startX = clientX;
+      handleStartLeft = handle.offsetLeft;
+      handle.setPointerCapture?.(event.pointerId || 1);
+    }
+    function onMove(clientX) {
+      if (!isDown || isVerified) return;
+      const dx = clientX - startX;
+      const containerWidth = wrap.clientWidth;
+      const maxLeft = containerWidth - handle.clientWidth - 4; // 4px inset
+      const newLeft = clamp(4, handleStartLeft + dx, maxLeft);
+      handle.style.left = newLeft + 'px';
+      track.style.width = (newLeft + handle.clientWidth) + 'px';
+      const progress = (newLeft - 4) / (maxLeft - 4);
+      if (progress > 0.985) {
+        // Success
+        setVerified(true);
+        // Lock handle in place
+        handle.style.left = maxLeft + 'px';
+        track.style.width = containerWidth + 'px';
+      }
+    }
+    function onUp() {
+      if (!isDown || isVerified) return;
+      isDown = false;
+      // Snap back
+      handle.style.left = '4px';
+      track.style.width = '0px';
+    }
+
+    // Mouse events
+    handle.addEventListener('mousedown', (e) => onDown(e.clientX));
+    window.addEventListener('mousemove', (e) => onMove(e.clientX));
+    window.addEventListener('mouseup', onUp);
+
+    // Touch events
+    handle.addEventListener('touchstart', (e) => onDown(e.touches[0].clientX), { passive: true });
+    window.addEventListener('touchmove', (e) => onMove(e.touches[0].clientX), { passive: true });
+    window.addEventListener('touchend', onUp);
+
+    // Keyboard accessibility: allow Right Arrow to verify
+    handle.addEventListener('keydown', (e) => {
+      if (isVerified) return;
+      if (e.key === 'ArrowRight') {
+        setVerified(true);
+        const containerWidth = wrap.clientWidth;
+        const maxLeft = containerWidth - handle.clientWidth - 4;
+        handle.style.left = maxLeft + 'px';
+        track.style.width = containerWidth + 'px';
+      }
+    });
+  </script>
+</body>
+</html>

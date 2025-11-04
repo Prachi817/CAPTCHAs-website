@@ -1,0 +1,56 @@
+<!doctype html>
+<label for="name">Name</label>
+<input id="name" name="name" type="text" required autocomplete="name" />
+</div>
+
+<div>
+<label for="email">Email</label>
+<input id="email" name="email" type="email" required autocomplete="email" />
+</div>
+
+<div>
+<label for="message">Message</label>
+<textarea id="message" name="message" rows="5" required></textarea>
+</div>
+
+<!-- Honeypot: bots tend to fill this. Humans never see it. -->
+<div class="hp-wrap" aria-hidden="true">
+<label for="website">Website (leave blank)</label>
+<input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
+</div>
+
+<!-- Canaries: must remain unchanged on the server side -->
+<input type="hidden" name="canary_token" value="XyZ123Safe" />
+<input type="hidden" name="form_version" value="v1" />
+
+<button type="submit">Send</button>
+</form>
+
+<p id="status" class="note" role="status" aria-live="polite"></p>
+
+<script>
+// Optional: tiny JS enhancement to avoid accidental submit with empty requireds
+const form = document.getElementById('contactForm');
+const status = document.getElementById('status');
+
+form.addEventListener('submit', async (e) => {
+e.preventDefault();
+
+const fd = new FormData(form);
+try {
+const res = await fetch(form.action, {
+method: 'POST',
+body: fd
+});
+const text = await res.text();
+status.textContent = text;
+status.className = res.ok ? 'note success' : 'note error';
+if (res.ok) form.reset();
+} catch (err) {
+status.textContent = 'Network error — please try again.';
+status.className = 'note error';
+}
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF‑8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Dog Page</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" /></head>
+<body>
+  <h1>Welcome to the Dog Page!</h1>
+  <img src="{{ url_for('static', filename='dog.jpg') }}" alt="A happy dog" style="width:300px;border-radius:10px;"/>
+  <div class="container">
+    <button onclick="alert('Hello!')">Click Me!</button>
+  </div>
+</body></html>

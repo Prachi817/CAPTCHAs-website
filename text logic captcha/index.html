@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Text Logic CAPTCHA</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="captcha-container" class="container">
+    <h2>Finish this phrase:</h2>
+    <p><strong>For whom does the bell toll?</strong></p>
+
+    <select id="text-captcha">
+      <option value="">-- Select an answer --</option>
+      <option value="wrong1">bigger in Texas</option>
+      <option value="correct">it tolls for thee</option>
+      <option value="wrong2">chocolate pudding</option>
+      <option value="wrong3">names will never hurt me</option>
+    </select>
+
+    <button onclick="verifyTextCaptcha()">Submit</button>
+  </div>
+
+  <div id="content" class="container" style="display: none;">
+    <h1>Welcome!</h1>
+    <img src="dog.jpg" alt="A happy dog" class="dog-image" />
+    <button onclick="sayHello()">Click Me!</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

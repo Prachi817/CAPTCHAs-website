@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Behavioral CAPTCHA</title>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+</head>
+<body>
+  <h1>Please verify you are human</h1>
+  <form method="POST">
+    <div class="cf-turnstile" data-sitekey="{{ site_key }}"></div>
+    <button type="submit">Submit</button>
+  </form>
+</body>
+</html>
+

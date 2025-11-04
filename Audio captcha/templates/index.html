@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dual CAPTCHA</title>
+  <style>
+    .slider-container {
+      width: 300px;
+      background-color: #ddd;
+      border-radius: 5px;
+      position: relative;
+      height: 40px;
+      margin-bottom: 20px;
+    }
+    .slider-button {
+      width: 40px;
+      height: 40px;
+      background-color: #4CAF50;
+      position: absolute;
+      left: 0;
+      top: 0;
+      cursor: grab;
+      border-radius: 5px;
+    }
+  </style>
+  <script>
+    function initSlider() {
+      let slider = document.getElementById('slider-btn');
+      let container = document.querySelector('.slider-container');
+      let isDown = false;
+
+      slider.addEventListener('mousedown', () => isDown = true);
+      document.addEventListener('mouseup', () => isDown = false);
+      document.addEventListener('mousemove', (e) => {
+        if (isDown) {
+          let rect = container.getBoundingClientRect();
+          let x = e.clientX - rect.left - 20;
+          if (x >= 0 && x <= rect.width - 40) {
+            slider.style.left = x + 'px';
+          }
+          if (x >= rect.width - 45) {
+            document.getElementById('slider_verification').value = "unlocked";
+          }
+        }
+      });
+    }
+    window.onload = initSlider;
+  </script>
+</head>
+<body>
+  <h2>Dual CAPTCHA Verification</h2>
+
+  <!-- Slider CAPTCHA -->
+  <p>Step 1: Move the slider to the right to unlock:</p>
+  <div class="slider-container">
+    <div id="slider-btn" class="slider-button"></div>
+  </div>
+  <input type="hidden" id="slider_verification" name="slider_verification" form="captcha-form">
+
+  <!-- Audio CAPTCHA -->
+  <p>Step 2: Listen and type the numbers:</p>
+  <audio controls>
+    <source src="{{ url_for('static', filename=audio_file) }}" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <form method="POST" action="/submit" id="captcha-form">
+    <input type="text" name="audio_captcha" placeholder="Enter numbers here" required>
+    <br><br>
+    <button type="submit">Verify</button>
+    <a href="/retry"><button type="button">Retry</button></a>
+  </form>
+</body>
+</html>

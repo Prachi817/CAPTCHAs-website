@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Image CAPTCHA</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script>
+    function verifySelection(selected, answer) {
+      fetch("/verify", {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ selected: selected, answer: answer })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          window.location.href = data.redirect;
+        } else {
+          alert("❌ Wrong image! Try again.");
+          location.reload();
+        }
+      });
+    }
+  </script>
+</head>
+<body>
+  <h2>Click on the image of a <strong>{{ prompt }}</strong></h2>
+  <div class="gallery">
+    {% for img in images %}
+      <img src="{{ url_for('static', filename='images/' + img.filename) }}"
+           alt="{{ img.label }}"
+           onclick="verifySelection('{{ img.filename }}', '{{ answer }}')">
+    {% endfor %}
+  </div>
+</body>
+</html>
+

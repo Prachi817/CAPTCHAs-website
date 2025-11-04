@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF‑8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Puzzle CAPTCHA</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <h1>Drag the puzzle piece into the dashed slot</h1>
+  <div id="captcha-container">
+    <div id="target-slot" style="top:100px; left:210px;"></div>
+    <img id="puzzle-piece" src="{{ url_for('static', filename='puzzle-piece.jpeg') }}" />
+  </div>
+  <script>
+    const piece = document.getElementById('puzzle-piece');
+    const slot = document.getElementById('target-slot');
+    let offsetX, offsetY, startX, startY;
+
+    function randomize() {
+      const rect = piece.parentElement.getBoundingClientRect();
+      startX = Math.random() * (rect.width - piece.offsetWidth);
+      startY = Math.random() * (rect.width - piece.offsetHeight);
+      piece.style.left = startX + 'px';
+      piece.style.top = startY + 'px';
+    }
+    randomize();
+
+    function startDrag(e) {
+      const p = e.touches ? e.touches[0] : e;
+      offsetX = p.clientX - piece.offsetLeft;
+      offsetY = p.clientY - piece.offsetTop;
+      piece.style.cursor = 'grabbing';
+    }
+    function doDrag(e) {
+      e.preventDefault();
+      const p = e.touches ? e.touches[0] : e;
+      piece.style.left = (p.clientX - offsetX) + 'px';
+      piece.style.top = (p.clientY - offsetY) + 'px';
+    }
+    function endDrag() {
+      piece.style.cursor = 'grab';
+      const px = piece.offsetLeft, py = piece.offsetTop;
+      const tx = slot.offsetLeft, ty = slot.offsetTop;
+      if (Math.hypot(px - tx, py - ty) < 20) {
+        window.location = '/dog';
+      }
+    }
+
+    piece.addEventListener('mousedown', startDrag);
+    piece.addEventListener('touchstart', startDrag);
+    window.addEventListener('mousemove', doDrag);
+    window.addEventListener('touchmove', doDrag);
+    window.addEventListener('mouseup', endDrag);
+    window.addEventListener('touchend', endDrag);
+  </script>
+</body>
+</html>

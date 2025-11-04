@@ -1,0 +1,36 @@
+bbody {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-color: #fefefe;
+  padding: 50px;
+}
+
+h1, h2 {
+  margin-bottom: 30px;
+}
+
+.gallery {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+}
+
+img {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border: 3px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+img:hover {
+  border-color: #007BFF;
+}
+
+.dog-img {
+  width: 300px;
+  height: auto;
+  border-radius: 12px;
+}

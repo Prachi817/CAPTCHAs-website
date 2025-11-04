@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>reCAPTCHA v3 Dog Example</title>
+  <script src="https://www.google.com/recaptcha/api.js?render=6LeHJJArAAAAAGO2ywCQc_VhZMgAwET4btwOXGGB"></script>
+  <style>
+    .dog-image {
+      display: none;
+      max-width: 300px;
+    }
+  </style>
+</head>
+<body>
+  <h1>A happy dog</h1>
+  <img id="dog" class="dog-image" src="/dog.jpeg" alt="Happy Dog">
+  <button id="btn" style="background: gold; padding: 10px;">Click Me!</button>
+
+  <script>
+    document.getElementById('btn').addEventListener('click', function () {
+      grecaptcha.ready(function () {
+        grecaptcha.execute('6LeHJJArAAAAAGO2ywCQc_VhZMgAwET4btwOXGGB', { action: 'submit' }).then(function (token) {
+          fetch('/verify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token: token })
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success && data.score >= 0.5) {
+              document.getElementById('dog').style.display = 'block';
+            } else {
+              alert('Failed reCAPTCHA. Are you a robot?');
+            }
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>
